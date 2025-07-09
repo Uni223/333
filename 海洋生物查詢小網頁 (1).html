@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>海洋生物小查詢網頁</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #e0f7fa;
+      text-align: center;
+      padding: 20px;
+    }
+    .card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      padding: 20px;
+      margin: 10px auto;
+      width: 300px;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐠 海洋生物英文圖卡查詢</h1>
+  <p>請選擇一種海洋生物：</p>
+  <select id="animalSelect" onchange="showInfo()">
+    <option value="">-- 請選擇 --</option>
+    <option value="clownfish">小丑魚</option>
+    <option value="stingray">魟魚</option>
+    <option value="flyingfish">飛魚</option>
+    <option value="starfish">海星</option>
+    <option value="jellyfish">水母</option>
+    <option value="coral">珊瑚</option>
+    <option value="crab">螃蟹</option>
+    <option value="lobster">龍蝦</option>
+    <option value="clam">蛤蜊</option>
+    <option value="sea_turtle">海龜</option>
+    <option value="seashell">海螺</option>
+    <option value="shark">鯊魚</option>
+    <option value="whale">鯨魚</option>
+    <option value="sealion">海獅</option>
+    <option value="manatee">海牛</option>
+    <option value="dolphin">海豚</option>
+  </select>
+
+  <div id="info" class="card" style="display:none;">
+    <h2 id="animalName"></h2>
+    <img id="animalImage" src="" alt="animal image">
+    <p id="animalEnName"></p>
+  </div>
+
+  <script>
+    const animals = {
+      clownfish: {
+        name: "小丑魚",
+        en: "Clownfish",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Amphiprion_ocellaris_%28clown_anemonefish%29.jpg/640px-Amphiprion_ocellaris_%28clown_anemonefish%29.jpg"
+      },
+      stingray: {
+        name: "魟魚",
+        en: "Stingray",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Bluespotted_ribbontail_ray.jpg/640px-Bluespotted_ribbontail_ray.jpg"
+      },
+      flyingfish: {
+        name: "飛魚",
+        en: "Flying Fish",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Flying_fish_2.jpg/640px-Flying_fish_2.jpg"
+      },
+      starfish: {
+        name: "海星",
+        en: "Starfish",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Starfish_aka_Sea_Star.jpg/640px-Starfish_aka_Sea_Star.jpg"
+      },
+      jellyfish: {
+        name: "水母",
+        en: "Jellyfish",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Moon_jellyfish_%28Aurelia_aurita%29.jpg/640px-Moon_jellyfish_%28Aurelia_aurita%29.jpg"
+      },
+      coral: {
+        name: "珊瑚",
+        en: "Coral",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Coral_reef.jpg/640px-Coral_reef.jpg"
+      },
+      crab: {
+        name: "螃蟹",
+        en: "Crab",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Calappa_flavomaculata.jpg/640px-Calappa_flavomaculata.jpg"
+      },
+      lobster: {
+        name: "龍蝦",
+        en: "Lobster",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Lobster_-_Homarus_gammarus.jpg/640px-Lobster_-_Homarus_gammarus.jpg"
+      },
+      clam: {
+        name: "蛤蜊",
+        en: "Clam",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Tridacna_gigas.jpg/640px-Tridacna_gigas.jpg"
+      },
+      sea_turtle: {
+        name: "海龜",
+        en: "Sea Turtle",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Green_turtle_swimming_over_coral_reefs_in_Kona.jpg/640px-Green_turtle_swimming_over_coral_reefs_in_Kona.jpg"
+      },
+      seashell: {
+        name: "海螺",
+        en: "Seashell",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Conch_shell.jpg/640px-Conch_shell.jpg"
+      },
+      shark: {
+        name: "鯊魚",
+        en: "Shark",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/White_shark.jpg/640px-White_shark.jpg"
+      },
+      whale: {
+        name: "鯨魚",
+        en: "Whale",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Humpback_Whale_underwater_shot.jpg/640px-Humpback_Whale_underwater_shot.jpg"
+      },
+      sealion: {
+        name: "海獅",
+        en: "Sea Lion",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Sea_Lion_ca.jpg/640px-Sea_Lion_ca.jpg"
+      },
+      manatee: {
+        name: "海牛",
+        en: "Manatee",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Manatee_in_Crystal_River_Florida_USA.jpg/640px-Manatee_in_Crystal_River_Florida_USA.jpg"
+      },
+      dolphin: {
+        name: "海豚",
+        en: "Dolphin",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Common_dolphin.jpg/640px-Common_dolphin.jpg"
+      }
+    };
+
+    function showInfo() {
+      const selected = document.getElementById("animalSelect").value;
+      if (!selected) {
+        document.getElementById("info").style.display = "none";
+        return;
+      }
+      const animal = animals[selected];
+      document.getElementById("animalName").innerText = animal.name;
+      document.getElementById("animalEnName").innerText = "英文名稱：" + animal.en;
+      document.getElementById("animalImage").src = animal.img;
+      document.getElementById("info").style.display = "block";
+    }
+  </script>
+</body>
+</html>
